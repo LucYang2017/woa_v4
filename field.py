@@ -149,7 +149,7 @@ def query_c(positions, field):
         # print('%f %f %f %d' % (x, y, z, c_index))
         if np.isnan(c[-1]):
             c[-1] = 0
-        c_array.append(c)
+        c_array.append(c[-1])
     return np.array(c_array)
 
 

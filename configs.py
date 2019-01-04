@@ -14,3 +14,4 @@ Y_MAX = 2.81
 Z_MAX = 2.68
 FIELD_TYPE = 'Mix_constantx'
 STEP_LEN = 0.3
+COUNTER_MAX = 100
