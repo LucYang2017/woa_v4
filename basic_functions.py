@@ -5,9 +5,8 @@
 # @Email   : lucyang0901@gmail.com
 # @File    : basic_functions.py
 
-from configs import *
-import random
-import math
+from agent import *
+import print_colors
 
 
 def check_boundary_3d(position):
@@ -30,3 +29,65 @@ def check_boundary_3d(position):
     position[1] = round(position[1], 2)
     position[2] = round(position[2], 2)
     return position
+
+
+def go_forward(agents):
+    for agent in agents:
+        if len(agent.history) <= 1:
+            gradient = np.array([round(random.uniform(X_MIN, X_MAX), 2), round(random.uniform(Y_MIN, Y_MAX), 2),
+                                 round(random.uniform(Z_MIN, Z_MAX), 2)])
+        else:
+            gradient = agent.history[-1][0] - agent.history[-2][0]  # 当前位置减去上一步的位置，得到方向向量
+        gradient_len = np.linalg.norm(gradient)
+        if gradient_len == 0:
+            direction = np.array([round(random.uniform(0, 1), 2), round(random.uniform(0, 1), 2),
+                                  round(random.uniform(0, 1), 2)])
+        else:
+            direction = gradient / gradient_len
+        new_position = agent.position + STEP_LEN * direction
+        new_position = check_boundary_3d(new_position)
+        agent.position = new_position
+    return agents
+
+
+def show_info(agents, leader, t, state):
+    print('********')
+    if state == 0:
+        print_colors.green('FINDING')
+    elif state == 1:
+        print_colors.red('TRACING')
+    print('ITER NO. %d\tTIME %d' % (len(leader.history), t))
+    print('********')
+    for i in range(len(agents)):
+        print('agent no. %d\t\tp: %s\tc: %s' % (i, str(agents[i].position), str(agents[i].concentration)))
+    print('********')
+    print_colors.yellow('AGENT LEADER\tp: %s\tc: %s' % (leader.position, leader.concentration))
+    print('********')
+
+
+def save_results(agents, leader, serial_no, finding_end):
+    import os
+    path = 'result/' + str(serial_no)
+    is_exists = os.path.exists(path)
+
+    if not is_exists:
+        os.mkdir(path)
+
+    f = open(path + '/%s-%s.txt' % (serial_no, str(len(leader.history))), 'w')
+    for i in range(len(leader.history)):
+        if i < finding_end:
+            f.write('FINDING  ITER NO. %d\tTIME %d\n' % (i, 2 * i))
+        else:
+            f.write('FINDING  ITER NO. %d\tTIME %d\n' % (i, 2 * i))
+        for j in range(len(agents)):
+            f.write('agent no. %d\t\tp: %s\tc: %s\n' % (j, str(agents[j].history[i][0]), str(agents[j].history[i][1])))
+        f.write('AGENT LEADER\tp: %s\tc: %s\n' % (str(leader.history[i][0]), str(leader.history[i][1])))
+    f.close()
+    f = open(path + '/agents.data', 'wb')
+    import pickle as p
+    p.dump(agents, f)
+    f.close()
+    f.close()
+    f = open(path + '/leader.data', 'wb')
+    p.dump(leader, f)
+    f.close()

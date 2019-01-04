@@ -166,15 +166,3 @@ def load_field(file_name):
     import pickle as p
     f = open('field/' + str(FIELD_TYPE) + '/' + str(file_name) + '.data', 'rb')
     return p.load(f)
-
-
-# import random
-#
-#
-# field = load_field(111)
-# print(len(field))
-#
-# ps = [[random.uniform(X_MIN, X_MAX), random.uniform(Y_MIN, Y_MAX), random.uniform(Z_MIN, Z_MAX)] for i in range(100000)]
-# cc = query_c(ps, field)
-
-
