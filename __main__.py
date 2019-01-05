@@ -7,14 +7,10 @@
 
 import field
 import agent
-import configs
 import basic_functions as bf
-import print_colors
-import woa
 import robotic_active_olfaction as rao
 from configs import *
 import time
-
 
 if __name__ == "__main__":
     agents_no = 3
@@ -26,10 +22,9 @@ if __name__ == "__main__":
     finding_end = COUNTER_MAX
     serial_no = str(time.strftime("%Y%m%d-%H%M%S", time.localtime()))
 
+    agents, leader = agent.init_agents_fixed(agents_no, c_field, [-1, -1, 0.5])
     # agents, leader = init_agents_random(agents_no, c_field)
 
-    init_position = [-1, -1, 0.5]
-    agents, leader = agent.init_agents_fixed(agents_no, c_field, init_position)
     bf.save_trajectory(agents, leader, serial_no)
     bf.save_results(agents, leader, serial_no, finding_end)
     bf.show_info(agents, leader, t, state)
@@ -59,4 +54,3 @@ if __name__ == "__main__":
 
     bf.save_trajectory(agents, leader, serial_no)
     bf.save_results(agents, leader, serial_no, finding_end)
-    # copy_console_output(serial_no)

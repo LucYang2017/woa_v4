@@ -25,14 +25,14 @@ def woa_3d(agents, leader):
 
         p = random.uniform(0, 1)
 
-        A = 2 * a * random.uniform(0, 1) - a
-        C = 2 * random.uniform(0, 1)
+        C = np.array([random.uniform(-2, 2) for i in range(len(leader.position))])
+        A = random.uniform(-a, a)
 
         chioce = 0
         if p < 0.5:
             if abs(A) < 1:
                 chioce = 0
-                D = abs(C * leader.position - agent.position)
+                D = C * abs(leader.position - agent.position)
                 # print(leader.position)
                 # print(A * D)
                 new_position = leader.position - A * D
@@ -40,7 +40,7 @@ def woa_3d(agents, leader):
                 chioce = 1
                 random_agent_no = random.randint(0, agents_no - 1)
                 random_agent = agents[random_agent_no]
-                D = abs(C * random_agent.position - agent.position)
+                D = C * abs(random_agent.position - agent.position)
                 new_position = random_agent.position - A * D
         elif p >= 0.5:
             chioce = 2
