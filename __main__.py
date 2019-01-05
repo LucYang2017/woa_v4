@@ -13,7 +13,7 @@ from configs import *
 import time
 
 if __name__ == "__main__":
-    agents_no = 3
+    agents_no = 5
     t = 1
     c_field = field.load_field(t)
     plume_finding_threshold = 0.2

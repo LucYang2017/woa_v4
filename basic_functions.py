@@ -129,7 +129,6 @@ def save_trajectory(agents, leader, serial_no):
         y.append(p[0][1])
         z.append(p[0][2])
     colour_no = agents.index(agent) % len(colours)
-    ax.plot(np.array(x), np.array(y), np.array(z), c=colours[colour_no])
     for i in range(len(agent.history)):
         ax.scatter(x[i], y[i], z[i], marker='*', c='r')
         ax.text(x[i], y[i], z[i], '    ' + str(i + 1), color='r', fontsize='large')

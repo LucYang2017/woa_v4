@@ -9,6 +9,7 @@ from configs import *
 import random
 import math
 import basic_functions
+import numpy as np
 
 
 def woa_3d(agents, leader):
@@ -28,28 +29,27 @@ def woa_3d(agents, leader):
         C = np.array([random.uniform(-2, 2) for i in range(len(leader.position))])
         A = random.uniform(-a, a)
 
-        chioce = 0
+        choice = 0
         if p < 0.5:
             if abs(A) < 1:
-                chioce = 0
+                choice = 0
                 D = C * abs(leader.position - agent.position)
-                # print(leader.position)
-                # print(A * D)
                 new_position = leader.position - A * D
             elif abs(A) >= 1:
-                chioce = 1
+                choice = 1
                 random_agent_no = random.randint(0, agents_no - 1)
                 random_agent = agents[random_agent_no]
                 D = C * abs(random_agent.position - agent.position)
                 new_position = random_agent.position - A * D
         elif p >= 0.5:
-            chioce = 2
+            choice = 2
             D = abs(leader.position - agent.position)
             b = 1  # 用来定义螺旋大小的常数
             l = random.uniform(-1, 1)
             new_position = D * math.exp(b * l) * math.cos(2 * math.pi * l) + leader.position
 
-        # print('agent no. %d  a = %f  p = %f A = %s C = %s D = %s' % (agents.index(agent), a, p, str(A), str(C), str(D)))
+        print('agent no. %d  a = %f  p = %f A = %s C = %s D = %s choice = %d' % (
+        agents.index(agent), a, p, str(A), str(C), str(D), choice))
         new_position = basic_functions.check_boundary_3d(new_position)
         agent.position = new_position
     return agents
