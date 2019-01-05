@@ -33,13 +33,13 @@ def woa_3d(agents, leader):
         if p < 0.5:
             if abs(A) < 1:
                 choice = 0
-                D = C * abs(leader.position - agent.position)
+                D = abs(C * leader.position - agent.position)
                 new_position = leader.position - A * D
             elif abs(A) >= 1:
                 choice = 1
                 random_agent_no = random.randint(0, agents_no - 1)
                 random_agent = agents[random_agent_no]
-                D = C * abs(random_agent.position - agent.position)
+                D = abs(C * random_agent.position - agent.position)
                 new_position = random_agent.position - A * D
         elif p >= 0.5:
             choice = 2
@@ -47,9 +47,16 @@ def woa_3d(agents, leader):
             b = 1  # 用来定义螺旋大小的常数
             l = random.uniform(-1, 1)
             new_position = D * math.exp(b * l) * math.cos(2 * math.pi * l) + leader.position
-
-        print('agent no. %d  a = %f  p = %f A = %s C = %s D = %s choice = %d' % (
-        agents.index(agent), a, p, str(A), str(C), str(D), choice))
+        import print_colors
+        if choice == 0:
+            print_colors.red('agent no. %d  a = %f  p = %f A = %s C = %s D = %s choice = %d' % (
+                agents.index(agent), a, p, str(A), str(C), str(D), choice))
+        elif choice == 1:
+            print_colors.green('agent no. %d  a = %f  p = %f A = %s C = %s D = %s choice = %d' % (
+                agents.index(agent), a, p, str(A), str(C), str(D), choice))
+        elif choice == 2:
+            print_colors.blue('agent no. %d  a = %f  p = %f A = %s C = %s D = %s choice = %d' % (
+                agents.index(agent), a, p, str(A), str(C), str(D), choice))
         new_position = basic_functions.check_boundary_3d(new_position)
         agent.position = new_position
     return agents
