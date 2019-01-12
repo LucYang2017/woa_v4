@@ -124,6 +124,7 @@ def query_c(positions, field):
     def get_nearest_coordinate_value(coordinate_value, coordinate_min, coordinate_max):
         d_min = float('inf')
         nearest_coordinate_value = 0
+
         for i in np.arange(coordinate_min, coordinate_max + accuracy, accuracy):
             d = abs(coordinate_value - i)
             if d <= d_min:
@@ -141,11 +142,20 @@ def query_c(positions, field):
         z_counter = (z - z_min) / accuracy + 1
         c_index = int((x_counter - 1) * y_total * z_total + (y_counter - 1) * z_total + z_counter)
         c = field[c_index]
-        if np.linalg.norm(c[:3] - np.array(position)) > accuracy * 1.7321:
+        # if np.linalg.norm(c[:3] - np.array(position)) > accuracy * 1.7321:
+        if np.linalg.norm(c[:3] - np.array([x, y, z])) != 0:
+
+            for i in range(len(field)):  # 防止出现不对的情况
+                if np.linalg.norm(field[i][:3] - np.array([x, y, z])) == 0:
+                    c_index = i
+        c = field[c_index]
+        if np.linalg.norm(c[:3] - np.array([x, y, z])) != 0:
             print_colors.red('ATTENTION !! This position is far away from the supposed position!!')
             print_colors.red('Distance:\t\t\t\t%s' % (np.linalg.norm(c[:3] - np.array(position))))
-            print_colors.red('Suspicious position:\t%s' % (position))
-            print_colors.red('Supposed position:\t\t%s' % (c[:3]))
+            print_colors.red('In position:\t%s' % (position))
+            print_colors.red('Formed position:\t%s' % ([x, y, z]))
+            print_colors.red('Out position:\t\t%s' % (c[:3]))
+
         # print('%f %f %f %d' % (x, y, z, c_index))
         if np.isnan(c[-1]):
             c[-1] = 0

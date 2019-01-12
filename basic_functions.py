@@ -14,21 +14,21 @@ import matplotlib.pyplot as plt
 def check_boundary_3d(position):
     while position[0] < X_MIN or position[0] > X_MAX:
         if position[0] < X_MIN:
-            position[0] = X_MIN + abs(X_MIN - position[0]) + 0.05
+            position[0] = X_MIN + 0.05
         elif position[0] > X_MAX:
-            position[0] = X_MAX - abs(X_MAX - position[0]) - 0.05
+            position[0] = X_MAX - 0.05
 
     while position[1] < Y_MIN or position[1] > Y_MAX:
         if position[1] < Y_MIN:
-            position[1] = Y_MIN + abs(Y_MIN - position[1]) + 0.05
+            position[1] = Y_MIN + 0.05
         elif position[1] > Y_MAX:
-            position[1] = Y_MAX - abs(Y_MAX - position[1]) - 0.05
+            position[1] = Y_MAX - 0.05
 
     while position[2] < Z_MIN or position[2] > Z_MAX:
         if position[2] < Z_MIN:
-            position[2] = Z_MIN + abs(Z_MIN - position[2]) + 0.05
+            position[2] = Z_MIN + 0.05
         elif position[2] > Z_MAX:
-            position[2] = Z_MAX - abs(Z_MAX - position[2]) - 0.05
+            position[2] = Z_MAX - 0.05
 
     position[0] = round(position[0], 2)
     position[1] = round(position[1], 2)
@@ -66,7 +66,9 @@ def show_info(agents, leader, t, state):
     print('ITER NO. %d\tTIME %d' % (len(leader.history), t))
     print('********')
     for i in range(len(agents)):
-        print('agent no. %d\t\tp: %s\tc: %s' % (i, str(agents[i].position), str(agents[i].concentration)))
+        distance = np.linalg.norm(agents[i].history[-1][0] - agents[i].history[-2][0])
+        print('agent no. %d\t\tp: %s\tc: %s\tdis: %f' % (
+            i, str(agents[i].position), str(agents[i].concentration), distance))
     print('********')
     print_colors.yellow('AGENT LEADER\tp: %s\tc: %s' % (leader.position, leader.concentration))
     print('********')

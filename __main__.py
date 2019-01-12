@@ -34,10 +34,9 @@ def source_localization(agents_no, finding_threshold, tracing_threshold):
         # bf.save_trajectory(agents, leader, serial_no)
         # bf.save_results(agents, leader, serial_no, finding_end)
         # bf.show_info(agents, leader, t, state)
-
     finding_end = len(leader.history)
-
     state = 1
+
     while leader.concentration <= tracing_threshold and len(leader.history) < COUNTER_MAX:
         t = len(leader.history) * 2
         if t >= 200:
@@ -48,6 +47,11 @@ def source_localization(agents_no, finding_threshold, tracing_threshold):
         # bf.save_results(agents, leader, serial_no, finding_end)
         # bf.show_info(agents, leader, t, state)
     tracing_end = len(leader.history)
+
+    SUCCESS = False
+
+    if tracing_end < tracing_threshold:
+        SUCCESS = True
 
     # bf.save_trajectory(agents, leader, serial_no)
     # bf.save_results(agents, leader, serial_no, finding_end)
@@ -60,9 +64,9 @@ if __name__ == "__main__":
     success = 0
     for i in range(100):
         finding_end, tracing_end = source_localization(agents_no=5,
-                                                       finding_threshold=0.6,
-                                                       tracing_threshold=0.6)
-        if finding_end < COUNTER_MAX:
+                                                       finding_threshold=0.2,
+                                                       tracing_threshold=0.7)
+        if tracing_end < COUNTER_MAX:
             success += 1
         print(i)
     print(success)
